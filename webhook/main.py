@@ -5,9 +5,9 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+# === Gemini/OpenAI Assistant Setup ===
 openai_api_key = os.environ.get("OPENAI_API_KEY")
 openai_assistant_id = os.environ.get("OPENAI_ASSISTANT_ID")
-
 client = OpenAI(api_key=openai_api_key)
 
 class AskRequest(BaseModel):
@@ -15,7 +15,14 @@ class AskRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return "Webhook is live"
+    return "Webhook is live ✅"
+
+@app.post("/ask")
+async def ask(request: Request):
+    ask_request = await request.json()
+    message = ask_request["message"]
+    response = ask_assistant(message)
+    return {"response": response}
 
 def ask_assistant(message: str):
     thread = client.beta.threads.create()
@@ -37,9 +44,10 @@ def ask_assistant(message: str):
     response = messages.data[0].content[0].text.value
     return response
 
-@app.post("/ask")
-async def ask(request: Request):
-    ask_request = await request.json()
-    message = ask_request["message"]
-    response = ask_assistant(message)
-    return {"response": response}
+# === Nyt endpoint: webhook til Baldr ===
+@app.post("/webhook")
+async def baldr_webhook(request: Request):
+    data = await request.json()
+    print("🔔 Task modtaget fra Baldr:")
+    print(data)
+    return {"status": "received", "echo": data}

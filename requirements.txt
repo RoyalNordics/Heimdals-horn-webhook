@@ -2,6 +2,4 @@ fastapi
 uvicorn
 requests
 openai
-flaskgit add requirements.txt
-git commit -m "Tilføj Flask og dependencies til deployment"
-git push origin main
+flask
