@@ -45,9 +45,36 @@ def ask_assistant(message: str):
     return response
 
 # === Nyt endpoint: webhook til Baldr ===
+baldr_webhook_url = os.environ.get("BALDR_WEBHOOK_URL")
+
 @app.post("/webhook")
-async def baldr_webhook(request: Request):
+async def webhook(request: Request):
     data = await request.json()
-    print("🔔 Task modtaget fra Baldr:")
+    print("🔔 Task modtaget:")
     print(data)
+    # Send to Autogen
+    import requests
+    autogen_url = os.environ.get("AUTOGEN_WEBHOOK_URL")
+    if autogen_url:
+        autogen_data = {
+            "agent": "Roo",
+            "task_name": "Unknown",
+            "status": "received",
+            "result": str(data),
+            "timestamp": "2025-04-01T19:05:00" # Replace with actual timestamp
+        }
+        try:
+            response = requests.post(autogen_url, json=autogen_data)
+            response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+            print("Sent to Autogen:", response.status_code)
+        except requests.exceptions.RequestException as e:
+            print("Error sending to Autogen:", e)
+    if baldr_webhook_url:
+        try:
+            response = requests.post(baldr_webhook_url, json=data)
+            response.raise_for_status()
+            print("Sent to Baldr:", response.status_code)
+        except requests.exceptions.RequestException as e:
+            print("Error sending to Baldr:", e)
+
     return {"status": "received", "echo": data}
