@@ -1,9 +1,11 @@
 services:
   - type: web
     name: heimdals-horn-webhook
-    runtime: python
-    buildCommand: pip install -r requirements.txt
+    env: python
+    buildCommand: "pip install -r requirements.txt"
     startCommand: "./start.sh"
     envVars:
       - key: OPENAI_API_KEY
-        fromSecret: OPENAI_API_KEY
+        value: sk-...
+      - key: OPENAI_ASSISTANT_ID
+        value: asst-...
