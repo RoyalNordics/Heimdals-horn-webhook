@@ -10,6 +10,6 @@ services:
       - key: OPENAI_ASSISTANT_ID
         value: asst-...
       - key: BALDR_WEBHOOK_URL
-        value: ""
+        value: http://localhost:5050/baldr_webhook
       - key: AUTOGEN_WEBHOOK_URL
-        value: ""
+        value: https://heimdals-horn-webhook.onrender.com/autogen_webhook
