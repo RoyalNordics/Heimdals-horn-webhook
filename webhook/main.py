@@ -8,7 +8,7 @@ app = FastAPI()
 # === Gemini/OpenAI Assistant Setup ===
 openai_api_key = os.environ.get("OPENAI_API_KEY")
 openai_assistant_id = os.environ.get("OPENAI_ASSISTANT_ID")
-client = OpenAI(api_key=openai_api_key)
+client = OpenAI(api_key=openai_api_key, base_url="http://localhost:5050")
 
 class AskRequest(BaseModel):
     message: str
