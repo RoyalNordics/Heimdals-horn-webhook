@@ -78,3 +78,10 @@ async def webhook(request: Request):
             print("Error sending to Baldr:", e)
 
     return {"status": "received", "echo": data}
+
+@app.post("/autogen_webhook")
+async def autogen_webhook(request: Request):
+    data = await request.json()
+    print("🔔 Task modtaget fra Autogen:")
+    print(data)
+    return {"status": "received", "echo": data}
