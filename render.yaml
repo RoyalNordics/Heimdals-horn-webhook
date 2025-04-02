@@ -3,7 +3,7 @@ services:
     name: heimdals-horn-webhook
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "./start.sh"
+    startCommand: "supervisor/./start.sh"
     envVars:
       - key: OPENAI_API_KEY
         value: sk-...

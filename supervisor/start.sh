@@ -1,0 +1,6 @@
+#!/bin/bash
+export OPENAI_API_KEY=$OPENAI_API_KEY
+export OPENAI_ASSISTANT_ID=$OPENAI_ASSISTANT_ID
+export BALDR_WEBHOOK_URL=$BALDR_WEBHOOK_URL
+export AUTOGEN_WEBHOOK_URL=$AUTOGEN_WEBHOOK_URL
+exec uvicorn webhook.main:app --host 0.0.0.0 --port 10000
